@@ -10,15 +10,24 @@ namespace HouseRent_API.Controllers
     public class PublicationAPIController : ControllerBase
     {
        [HttpGet]
-       public IEnumerable<PublicationDto> GetPublications() 
+       public ActionResult<IEnumerable<PublicationDto>> GetPublications() 
         {
-            return PublicationStore.publicationList;
+            return Ok(PublicationStore.publicationList);
         }
 
         [HttpGet("{id:int}")]
-        public PublicationDto GetPublication(int id)
+        public ActionResult<PublicationDto> GetPublication(int id)
         {
-            return PublicationStore.publicationList.FirstOrDefault(u=>u.Id==id);
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+            var publication = PublicationStore.publicationList.FirstOrDefault(u => u.Id == id);
+            if (publication == null)
+            {
+                return NotFound();
+            }
+            return Ok(publication);
         }
     }
 }
