@@ -1,11 +1,14 @@
-﻿namespace HouseRent_API.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HouseRent_API.Models
 {
     public class Publication
     {
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Identifier { get; set; }
-        public string PictureUrl { get; set; }
+        public string ImageUrl { get; set; }
         public string Description { get; set; }
         public string Address { get; set; }
         public string Tipology { get; set; }
