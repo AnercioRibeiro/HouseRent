@@ -4,6 +4,7 @@ namespace HouseRent_API.Models.Dto
 {
     public class PublicationDto
     {
+        [Key]
         public int Id { get; set; }
         [Required]
         [MaxLength(30)]
@@ -24,6 +25,7 @@ namespace HouseRent_API.Models.Dto
         public string Floor { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
+        public string ImageUrl { get; set; }
         public bool Elevator { get; set; }
         [Required]
         [MaxLength(1000)]
@@ -33,6 +35,9 @@ namespace HouseRent_API.Models.Dto
         [Required]
         [MaxLength(50)]
         public string Municipalities { get; set; }
+        [Required]
+        [MaxLength(10)]
+        public string Division { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
     }
