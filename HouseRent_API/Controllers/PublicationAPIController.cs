@@ -52,7 +52,7 @@ namespace HouseRent_API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<PublicationDto> CreatePublication([FromBody] PublicationDto publicationDTO) 
+        public ActionResult<PublicationDto> CreatePublication([FromBody] PublicationCreateDto publicationDTO) 
         {
             //if (!ModelState.IsValid)
             //{
@@ -67,11 +67,11 @@ namespace HouseRent_API.Controllers
             {
                 return BadRequest(publicationDTO);
             }
-            if (publicationDTO.Id > 0)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+            //if (publicationDTO.Id > 0)
+            //{
+            //    return StatusCode(StatusCodes.Status500InternalServerError);
 
-            }
+            //}
 
             Publication model = new()
             {
@@ -98,7 +98,7 @@ namespace HouseRent_API.Controllers
     };
             _db.Publications.Add(model);
             _db.SaveChanges();
-            return CreatedAtRoute("GetPublication", new {id = publicationDTO.Id }, publicationDTO);
+            return CreatedAtRoute("GetPublication", new {id = model.Id }, model);
         }
 
         [HttpDelete("{id:int}", Name = "DeletePublication")]
@@ -127,21 +127,22 @@ namespace HouseRent_API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult UpdatePublication(int id, [FromBody] PublicationDto publicationDTO)
+        public IActionResult UpdatePublication(int id, [FromBody] PublicationUpdateDto publicationDTO)
         {
             if (publicationDTO == null || id != publicationDTO.Id)
             {
                 return BadRequest();
             }
-            var publication = _db.Publications.FirstOrDefault(x => x.Id == id);
+            //var publication = _db.Publications.FirstOrDefault(x => x.Id == id);
 
-            if (publication == null)
-            {
-                return NotFound();
-            }
+            //if (publication == null)
+            //{
+            //    return NotFound();
+            //}
 
             Publication model = new()
             {
+                Id = publicationDTO.Id,
                 Name = publicationDTO.Name,
                 Identifier = publicationDTO.Identifier,
                 ImageUrl = publicationDTO.ImageUrl,
@@ -157,7 +158,7 @@ namespace HouseRent_API.Controllers
                 PaymentPeriodicy = publicationDTO.PaymentPeriodicy,
                 Price = publicationDTO.Price,
                 Municipalities = publicationDTO.Municipalities,
-                CreatedDate = publicationDTO.CreatedDate
+                UpdatedDate = publicationDTO.UpdatedDate
 
             };
 
@@ -170,7 +171,7 @@ namespace HouseRent_API.Controllers
         [HttpPatch("{id:int}", Name = "UpdatePartialPublication")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult UpdatePartialPublication(int id, JsonPatchDocument<PublicationDto> patchPublicationDto)
+        public IActionResult UpdatePartialPublication(int id, JsonPatchDocument<PublicationUpdateDto> patchPublicationDto)
         {
 
             if (patchPublicationDto == null || id == 0)
@@ -178,7 +179,7 @@ namespace HouseRent_API.Controllers
                 return BadRequest();
             }
             var publication = _db.Publications.AsNoTracking().FirstOrDefault(x => x.Id == id);
-            PublicationDto publicationDto = new()
+            PublicationUpdateDto publicationDto = new()
             {
                 Id = publication.Id,
                 Name = publication.Name,
@@ -197,7 +198,7 @@ namespace HouseRent_API.Controllers
                 PaymentPeriodicy = publication.PaymentPeriodicy,
                 Price = publication.Price,
                 Municipalities = publication.Municipalities,
-                CreatedDate = publication.CreatedDate
+                UpdatedDate = publication.UpdatedDate
 
             };
             if (publication == null)
@@ -223,7 +224,7 @@ namespace HouseRent_API.Controllers
                 PaymentPeriodicy = publicationDto.PaymentPeriodicy,
                 Price = publicationDto.Price,
                 Municipalities = publicationDto.Municipalities,
-                CreatedDate = publicationDto.CreatedDate
+                UpdatedDate = publicationDto.UpdatedDate
 
             };
             _db.Publications.Update(model);
