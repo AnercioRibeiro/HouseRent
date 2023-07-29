@@ -1,7 +1,11 @@
-﻿namespace HouseRent_API.Models.Dto
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HouseRent_API.Models.Dto
 {
-    public class PublicationCreateDto
+    public class PublicationUpdateDto
     {
+        [Required]
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Identifier { get; set; }
         public string ImageUrl { get; set; }
@@ -17,6 +21,6 @@
         public string PaymentPeriodicy { get; set; }
         public decimal Price { get; set; }
         public string Municipalities { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
     }
 }
