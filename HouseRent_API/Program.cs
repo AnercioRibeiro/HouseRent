@@ -1,3 +1,5 @@
+using AutoMapper;
+using HouseRent_API;
 using HouseRent_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -7,7 +9,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
+builder.Services.AddAutoMapper(typeof(MappingConfig));
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 // Add services to the container.
 
 Log.Logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.File("log/publications.txt", rollingInterval: RollingInterval.Day).CreateLogger();
@@ -19,6 +22,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
 
 
 // Configure the HTTP request pipeline.
