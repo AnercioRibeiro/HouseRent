@@ -1,4 +1,5 @@
-﻿using HouseRent_API.Data;
+﻿using AutoMapper;
+using HouseRent_API.Data;
 using HouseRent_API.Models;
 using HouseRent_API.Models.Dto;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -14,104 +15,103 @@ namespace HouseRent_API.Controllers
     {
         private readonly ILogger<PublicationAPIController> _logger;
         private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
 
-        public PublicationAPIController(ILogger<PublicationAPIController> logger, ApplicationDbContext db)
+        public PublicationAPIController(ILogger<PublicationAPIController> logger, ApplicationDbContext db, IMapper mapper)
         {
             _logger = logger;
             _db = db;
+            _mapper = mapper;
         }
 
         [HttpGet(Name ="GetPublications")]
        [ProducesResponseType(StatusCodes.Status200OK)]
-       public ActionResult<IEnumerable<PublicationDto>> GetPublications() 
+       public async Task<ActionResult<IEnumerable<Publication>>> GetPublications() 
         {
             _logger.LogInformation("Getting all publications");
-            return Ok(_db.Publications.ToList());
+            IEnumerable<Publication> publicationList = await _db.Publications.ToListAsync();
+            return Ok(_mapper.Map<List<PublicationDto>>(publicationList));
+            
         }
 
         [HttpGet("{id:int}", Name = "GetPublication")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<PublicationDto> GetPublication(int id)
+        public async Task<ActionResult<PublicationDto>> GetPublication(int id)
         {
             if (id == 0)
             {
                 _logger.LogError("Get publication Error with Id"+id);
                 return BadRequest();
             }
-            var publication = _db.Publications.FirstOrDefault(u => u.Id == id);
+            var publication =  await _db.Publications.FirstOrDefaultAsync(u => u.Id == id);
             if (publication == null)
             {
                 return NotFound();
             }
-            return Ok(publication);
+            return Ok(_mapper.Map<PublicationDto>(publication));
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<PublicationDto> CreatePublication([FromBody] PublicationCreateDto publicationDTO) 
+        public async Task<ActionResult<PublicationDto>> CreatePublication([FromBody] PublicationCreateDto createDto) 
         {
             //if (!ModelState.IsValid)
             //{
             //    return BadRequest(ModelState);
             //}
-            if (_db.Publications.FirstOrDefault(x=>x.Name.ToLower() == publicationDTO.Name.ToLower()) != null)
+            if (await _db.Publications.FirstOrDefaultAsync(x=>x.Name.ToLower() == createDto.Name.ToLower()) != null)
             {
                 ModelState.AddModelError("CreatePublicationCustomError", "Villa already Exists!");
                 return BadRequest(ModelState);
             }
-            if (publicationDTO == null)
+            if (createDto == null)
             {
-                return BadRequest(publicationDTO);
+                return BadRequest(createDto);
             }
-            //if (publicationDTO.Id > 0)
-            //{
-            //    return StatusCode(StatusCodes.Status500InternalServerError);
+            Publication publication = _mapper.Map<Publication>(createDto);
 
-            //}
+    //   Publication model = new()
+    //   {
+        
+    //   Name = createDto.Name,
+    //   Identifier = createDto.Identifier,
+    //   ImageUrl = createDto.ImageUrl,
+    //   Description = createDto.Description,
+    //   Address = createDto.Address,
 
-            Publication model = new()
-            {
-            
+    //   Tipology = createDto.Tipology,
+    //   Floor = createDto.Floor,
+    //   Division = createDto.Division,
+    //   Latitude = createDto.Latitude,
+    //   Longitude = createDto.Longitude,
+    //   Elevator = createDto.Elevator,
+    //   Details = createDto.Details,
+    //   PaymentPeriodicy = createDto.PaymentPeriodicy,
+    //   Price = createDto.Price,
+    //   Municipalities = createDto.Municipalities,
+    //   CreatedDate = createDto.CreatedDate,
 
-       Name = publicationDTO.Name,
-       Identifier = publicationDTO.Identifier,
-       ImageUrl = publicationDTO.ImageUrl,
-       Description = publicationDTO.Description,
-       Address = publicationDTO.Address,
-
-       Tipology = publicationDTO.Tipology,
-       Floor = publicationDTO.Floor,
-       Division = publicationDTO.Division,
-       Latitude = publicationDTO.Latitude,
-       Longitude = publicationDTO.Longitude,
-       Elevator = publicationDTO.Elevator,
-       Details = publicationDTO.Details,
-       PaymentPeriodicy = publicationDTO.PaymentPeriodicy,
-       Price = publicationDTO.Price,
-       Municipalities = publicationDTO.Municipalities,
-       CreatedDate = publicationDTO.CreatedDate,
-
-    };
-            _db.Publications.Add(model);
-            _db.SaveChanges();
-            return CreatedAtRoute("GetPublication", new {id = model.Id }, model);
+    //};
+            await _db.Publications.AddAsync(publication);
+            await _db.SaveChangesAsync();
+            return CreatedAtRoute("GetPublication", new {id = publication.Id }, publication);
         }
 
         [HttpDelete("{id:int}", Name = "DeletePublication")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<PublicationDto> DeletePublication(int id)
+        public async Task<ActionResult<PublicationDto>> DeletePublication(int id)
         {
             if (id == 0)
             {
                 return BadRequest();
             }
-            var publication = _db.Publications.FirstOrDefault(x => x.Id == id);
+            var publication = await _db.Publications.FirstOrDefaultAsync(x => x.Id == id);
            
             if (publication == null)
             {
@@ -119,7 +119,7 @@ namespace HouseRent_API.Controllers
             }
 
             _db.Publications.Remove(publication);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
            
             return NoContent();
         }
@@ -127,9 +127,9 @@ namespace HouseRent_API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult UpdatePublication(int id, [FromBody] PublicationUpdateDto publicationDTO)
+        public async Task<IActionResult> UpdatePublication(int id, [FromBody] PublicationUpdateDto updateDto)
         {
-            if (publicationDTO == null || id != publicationDTO.Id)
+            if (updateDto == null || id != updateDto.Id)
             {
                 return BadRequest();
             }
@@ -140,30 +140,10 @@ namespace HouseRent_API.Controllers
             //    return NotFound();
             //}
 
-            Publication model = new()
-            {
-                Id = publicationDTO.Id,
-                Name = publicationDTO.Name,
-                Identifier = publicationDTO.Identifier,
-                ImageUrl = publicationDTO.ImageUrl,
-                Description = publicationDTO.Description,
-                Address = publicationDTO.Address,
-                Tipology = publicationDTO.Tipology,
-                Floor = publicationDTO.Floor,
-                Division = publicationDTO.Division,
-                Latitude = publicationDTO.Latitude,
-                Longitude = publicationDTO.Longitude,
-                Elevator = publicationDTO.Elevator,
-                Details = publicationDTO.Details,
-                PaymentPeriodicy = publicationDTO.PaymentPeriodicy,
-                Price = publicationDTO.Price,
-                Municipalities = publicationDTO.Municipalities,
-                UpdatedDate = publicationDTO.UpdatedDate
+            Publication publication = _mapper.Map<Publication>(updateDto);
 
-            };
-
-            _db.Publications.Update(model);
-            _db.SaveChanges();
+            _db.Publications.Update(publication);
+            await _db.SaveChangesAsync();
 
             return NoContent();
         }
@@ -171,64 +151,24 @@ namespace HouseRent_API.Controllers
         [HttpPatch("{id:int}", Name = "UpdatePartialPublication")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult UpdatePartialPublication(int id, JsonPatchDocument<PublicationUpdateDto> patchPublicationDto)
+        public async Task<IActionResult> UpdatePartialPublication(int id, JsonPatchDocument<PublicationUpdateDto> patchDto)
         {
 
-            if (patchPublicationDto == null || id == 0)
+            if (patchDto == null || id == 0)
             {
                 return BadRequest();
             }
-            var publication = _db.Publications.AsNoTracking().FirstOrDefault(x => x.Id == id);
-            PublicationUpdateDto publicationDto = new()
-            {
-                Id = publication.Id,
-                Name = publication.Name,
-                Identifier = publication.Identifier,
-                ImageUrl = publication.ImageUrl,
-                Description = publication.Description,
-                Address = publication.Address,
-
-                Tipology = publication.Tipology,
-                Floor = publication.Floor,
-                Division = publication.Division,
-                Latitude = publication.Latitude,
-                Longitude = publication.Longitude,
-                Elevator = publication.Elevator,
-                Details = publication.Details,
-                PaymentPeriodicy = publication.PaymentPeriodicy,
-                Price = publication.Price,
-                Municipalities = publication.Municipalities,
-                UpdatedDate = publication.UpdatedDate
-
-            };
+            var publication = await _db.Publications.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            PublicationUpdateDto publicationDto = _mapper.Map<PublicationUpdateDto>(publication);
             if (publication == null)
             {
                 return BadRequest();
             }
-            patchPublicationDto.ApplyTo(publicationDto, ModelState);
-            Publication model = new Publication()
-            {
-                Name = publicationDto.Name,
-                Identifier = publicationDto.Identifier,
-                ImageUrl = publicationDto.ImageUrl,
-                Description = publicationDto.Description,
-                Address = publicationDto.Address,
-                Id = publicationDto.Id,
-                Tipology = publicationDto.Tipology,
-                Floor = publicationDto.Floor,
-                Division = publicationDto.Division,
-                Latitude = publicationDto.Latitude,
-                Longitude = publicationDto.Longitude,
-                Elevator = publicationDto.Elevator,
-                Details = publicationDto.Details,
-                PaymentPeriodicy = publicationDto.PaymentPeriodicy,
-                Price = publicationDto.Price,
-                Municipalities = publicationDto.Municipalities,
-                UpdatedDate = publicationDto.UpdatedDate
-
-            };
+            patchDto.ApplyTo(publicationDto, ModelState);
+            Publication model = _mapper.Map<Publication>(publicationDto);
+   
             _db.Publications.Update(model);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
 
             if (!ModelState.IsValid)
             {

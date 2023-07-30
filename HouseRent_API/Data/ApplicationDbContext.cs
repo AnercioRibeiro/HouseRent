@@ -30,7 +30,8 @@ namespace HouseRent_API.Data
                     ImageUrl = "",
                     PaymentPeriodicy = "Mensal",
                     Price = 400000,
-                    Tipology = "T2"
+                    Tipology = "T2",
+                    
                 },
                     new Publication()
                 {
