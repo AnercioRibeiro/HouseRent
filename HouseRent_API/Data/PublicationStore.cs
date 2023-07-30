@@ -19,7 +19,7 @@ namespace HouseRent_API.Data
                      Latitude = "-8.8303705",
                      Longitude = "13.2779031",
                      Name = "",
-                     PictureUrl = "",
+                     ImageUrl = "",
                      PaymentPeriodicy = "Mensal",
                      Price = 400000,
                      Tipology = "T2"
@@ -37,7 +37,7 @@ namespace HouseRent_API.Data
                      Latitude = "-8.8303705",
                      Longitude = "13.2779031",
                      Name = "",
-                     PictureUrl = "",
+                     ImageUrl = "",
                      PaymentPeriodicy = "Mensal",
                      Price = 400000,
                      Tipology = "T2"
@@ -55,7 +55,7 @@ namespace HouseRent_API.Data
                     Latitude = "-8.8303705",
                     Longitude = "13.2779031",
                     Name = "",
-                    PictureUrl = "",
+                    ImageUrl = "",
                     PaymentPeriodicy = "Mensal",
                     Price = 400000,
                     Tipology = "T2"
