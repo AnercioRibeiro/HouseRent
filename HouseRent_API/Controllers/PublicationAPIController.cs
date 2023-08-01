@@ -2,6 +2,7 @@
 using HouseRent_API.Data;
 using HouseRent_API.Models;
 using HouseRent_API.Models.Dto;
+using HouseRent_API.Repository.IRepository;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +15,13 @@ namespace HouseRent_API.Controllers
     public class PublicationAPIController : ControllerBase
     {
         private readonly ILogger<PublicationAPIController> _logger;
-        private readonly ApplicationDbContext _db;
+        private readonly IPublicationRepository _PublicationRepo;
         private readonly IMapper _mapper;
 
-        public PublicationAPIController(ILogger<PublicationAPIController> logger, ApplicationDbContext db, IMapper mapper)
+        public PublicationAPIController(ILogger<PublicationAPIController> logger, IPublicationRepository PublicationRepo, IMapper mapper)
         {
             _logger = logger;
-            _db = db;
+            _PublicationRepo = PublicationRepo;
             _mapper = mapper;
         }
 
@@ -29,7 +30,7 @@ namespace HouseRent_API.Controllers
        public async Task<ActionResult<IEnumerable<Publication>>> GetPublications() 
         {
             _logger.LogInformation("Getting all publications");
-            IEnumerable<Publication> publicationList = await _db.Publications.ToListAsync();
+            IEnumerable<Publication> publicationList = await _PublicationRepo.GetAllAsync();
             return Ok(_mapper.Map<List<PublicationDto>>(publicationList));
             
         }
@@ -45,7 +46,7 @@ namespace HouseRent_API.Controllers
                 _logger.LogError("Get publication Error with Id"+id);
                 return BadRequest();
             }
-            var publication =  await _db.Publications.FirstOrDefaultAsync(u => u.Id == id);
+            var publication =  await _PublicationRepo.GetAsync(u => u.Id == id);
             if (publication == null)
             {
                 return NotFound();
@@ -63,7 +64,7 @@ namespace HouseRent_API.Controllers
             //{
             //    return BadRequest(ModelState);
             //}
-            if (await _db.Publications.FirstOrDefaultAsync(x=>x.Name.ToLower() == createDto.Name.ToLower()) != null)
+            if (await _PublicationRepo.GetAsync(x=>x.Name.ToLower() == createDto.Name.ToLower()) != null)
             {
                 ModelState.AddModelError("CreatePublicationCustomError", "Villa already Exists!");
                 return BadRequest(ModelState);
@@ -96,8 +97,7 @@ namespace HouseRent_API.Controllers
     //   CreatedDate = createDto.CreatedDate,
 
     //};
-            await _db.Publications.AddAsync(publication);
-            await _db.SaveChangesAsync();
+            await _PublicationRepo.CreateAsync(publication);
             return CreatedAtRoute("GetPublication", new {id = publication.Id }, publication);
         }
 
@@ -111,15 +111,14 @@ namespace HouseRent_API.Controllers
             {
                 return BadRequest();
             }
-            var publication = await _db.Publications.FirstOrDefaultAsync(x => x.Id == id);
+            var publication = await _PublicationRepo.GetAsync(x => x.Id == id);
            
             if (publication == null)
             {
                 return NotFound();
             }
 
-            _db.Publications.Remove(publication);
-            await _db.SaveChangesAsync();
+           await _PublicationRepo.RemoveAsync(publication);
            
             return NoContent();
         }
@@ -142,12 +141,11 @@ namespace HouseRent_API.Controllers
 
             Publication publication = _mapper.Map<Publication>(updateDto);
 
-            _db.Publications.Update(publication);
-            await _db.SaveChangesAsync();
+           await _PublicationRepo.UpdateAsync(publication);
 
             return NoContent();
         }
-        
+
         [HttpPatch("{id:int}", Name = "UpdatePartialPublication")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -158,7 +156,7 @@ namespace HouseRent_API.Controllers
             {
                 return BadRequest();
             }
-            var publication = await _db.Publications.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            var publication = await _PublicationRepo.GetAsync(x => x.Id == id, tracked:false);
             PublicationUpdateDto publicationDto = _mapper.Map<PublicationUpdateDto>(publication);
             if (publication == null)
             {
@@ -166,9 +164,8 @@ namespace HouseRent_API.Controllers
             }
             patchDto.ApplyTo(publicationDto, ModelState);
             Publication model = _mapper.Map<Publication>(publicationDto);
-   
-            _db.Publications.Update(model);
-            await _db.SaveChangesAsync();
+
+            await _PublicationRepo.UpdateAsync(model);
 
             if (!ModelState.IsValid)
             {
