@@ -1,6 +1,8 @@
 using AutoMapper;
 using HouseRent_API;
 using HouseRent_API.Data;
+using HouseRent_API.Repository;
+using HouseRent_API.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -9,8 +11,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddScoped<IPublicationRepository, PublicationRepository>();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
-builder.Services.AddAutoMapper(typeof(MappingConfig));
+
 // Add services to the container.
 
 Log.Logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.File("log/publications.txt", rollingInterval: RollingInterval.Day).CreateLogger();
