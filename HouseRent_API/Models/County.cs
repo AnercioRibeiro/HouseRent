@@ -1,4 +1,6 @@
-﻿namespace HouseRent_API.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HouseRent_API.Models
 {
     public class County
     {
