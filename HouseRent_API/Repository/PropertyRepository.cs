@@ -8,10 +8,10 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HouseRent_API.Repository
 {
-    public class PublicationRepository : Repository<Publication>, IPublicationRepository
+    public class PropertyRepository : Repository<Property>, IPropertyRepository
     {
         private readonly ApplicationDbContext _db;
-        public PublicationRepository(ApplicationDbContext db) : base(db)
+        public PropertyRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
@@ -58,12 +58,11 @@ namespace HouseRent_API.Repository
         //    await _db.SaveChangesAsync();
         //}
 
-        public async Task<Publication> UpdateAsync(Publication publication)
+        public async Task<Property> UpdateAsync(Property property)
         {
-            publication.UpdatedDate = DateTime.Now;
-             _db.Publications.Update(publication);
+             _db.Properties.Update(property);
             await _db.SaveChangesAsync();
-            return publication;
+            return property;
         }
     }
 }

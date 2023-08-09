@@ -1,12 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HouseRent_API.Models
+namespace HouseRent_API.Models.Dto
 {
-    public class PublicationUpdateDto
+    public class PropertyCreateDto
     {
 
-        [Required]
-        public int Id { get; set; }
         [Required]
         [MaxLength(30)]
         public string Name { get; set; }
@@ -22,7 +20,6 @@ namespace HouseRent_API.Models
         [MaxLength(30)]
         public string Tipology { get; set; }
         public string Floor { get; set; }
-       
         public string Division { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
@@ -35,6 +32,6 @@ namespace HouseRent_API.Models
         [Required]
         [MaxLength(50)]
         public string Municipalities { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

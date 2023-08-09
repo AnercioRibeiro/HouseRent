@@ -2,7 +2,7 @@
 
 namespace HouseRent_API.Models.Dto
 {
-    public class PublicationDto
+    public class PropertyDto
     {
         [Key]
 

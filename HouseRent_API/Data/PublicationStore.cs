@@ -4,9 +4,9 @@ namespace HouseRent_API.Data
 {
     public static class PublicationStore
     {
-        public static List<PublicationDto> publicationList = new List<PublicationDto>{
+        public static List<PropertyDto> publicationList = new List<PropertyDto>{
         
-                new PublicationDto
+                new PropertyDto
                 {
                      Id = 1,
                      Address = "Projecto Nova vida",
@@ -24,7 +24,7 @@ namespace HouseRent_API.Data
                      Price = 400000,
                      Tipology = "T2"
                 },
-                new PublicationDto
+                new PropertyDto
                 {
                      Id = 2,
                      Address = "Morro Bento",
@@ -42,7 +42,7 @@ namespace HouseRent_API.Data
                      Price = 400000,
                      Tipology = "T2"
                 },
-                new PublicationDto
+                new PropertyDto
                 {
                     Id = 3,
                     Address = "Benfica",

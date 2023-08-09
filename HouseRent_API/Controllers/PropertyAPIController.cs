@@ -12,32 +12,32 @@ using System.Net;
 
 namespace HouseRent_API.Controllers
 {
-    [Route("api/Publication")]
+    [Route("api/Property")]
     [ApiController]
-    public class PublicationAPIController : ControllerBase
+    public class PropertyAPIController : ControllerBase
     {
-        //private readonly ILogger<PublicationAPIController> _logger;
-        private readonly IPublicationRepository _PublicationRepo;
+        private readonly ILogger<PropertyAPIController> _logger;
+        private readonly IPropertyRepository _PropertyRepo;
         private readonly IMapper _mapper;
         protected APIResponse _response;
 
-        public PublicationAPIController(IPublicationRepository PublicationRepo, IMapper mapper)
+        public PropertyAPIController(IPropertyRepository PublicationRepo, IMapper mapper, ILogger<PropertyAPIController> logger)
         {
-            //_logger = logger;
-            _PublicationRepo = PublicationRepo;
+            _logger = logger;
+            _PropertyRepo = PublicationRepo;
             _mapper = mapper;
             this._response = new();
         }
 
-        [HttpGet(Name = "GetPublications")]
+        [HttpGet(Name = "GetProperties")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetPublications()
+        public async Task<ActionResult<APIResponse>> GetAllProperties()
         {
             try
             {
-                //_logger.LogInformation("Getting all publications");
-                IEnumerable<Publication> publicationList = await _PublicationRepo.GetAllAsync();
-                _response.Result = _mapper.Map<List<PublicationDto>>(publicationList);
+                _logger.LogInformation("Getting all properties");
+                IEnumerable<Property> publicationList = await _PropertyRepo.GetAllAsync();
+                _response.Result = _mapper.Map<List<PropertyDto>>(publicationList);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }
@@ -50,11 +50,11 @@ namespace HouseRent_API.Controllers
             return _response;
         }
 
-        [HttpGet("{id:int}", Name = "GetPublication")]
+        [HttpGet("{id:int}", Name = "GetProperty")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> GetPublication(int id)
+        public async Task<ActionResult<APIResponse>> GetProperty(int id)
         {
             try
             {
@@ -64,13 +64,13 @@ namespace HouseRent_API.Controllers
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
                 }
-                var publication = await _PublicationRepo.GetAsync(u => u.Id == id);
+                var publication = await _PropertyRepo.GetAsync(u => u.Id == id);
                 if (publication == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
-                _response.Result = _mapper.Map<PublicationDto>(publication);
+                _response.Result = _mapper.Map<PropertyDto>(publication);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }
@@ -87,27 +87,26 @@ namespace HouseRent_API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> CreatePublication([FromBody] PublicationCreateDto createDto)
+        public async Task<ActionResult<APIResponse>> CreateProperty([FromBody] PropertyCreateDto createDto)
         {
             try
             {
 
-                if (await _PublicationRepo.GetAsync(x => x.Name.ToLower() == createDto.Name.ToLower()) != null)
+                if (await _PropertyRepo.GetAsync(x => x.Name.ToLower() == createDto.Name.ToLower()) != null)
                 {
-                    ModelState.AddModelError("CreatePublicationCustomError", "Villa already Exists!");
+                    ModelState.AddModelError("CreatePropertyCustomError", "Villa already Exists!");
                     return BadRequest(ModelState);
                 }
                 if (createDto == null)
                 {
                     return BadRequest(createDto);
                 }
-                Publication publication = _mapper.Map<Publication>(createDto);
+                Property publication = _mapper.Map<Property>(createDto);
 
-                publication.CreatedDate = DateTime.Now;
-                await _PublicationRepo.CreateAsync(publication);
-                _response.Result = _mapper.Map<PublicationDto>(publication);
+                await _PropertyRepo.CreateAsync(publication);
+                _response.Result = _mapper.Map<PropertyDto>(publication);
                 _response.StatusCode = HttpStatusCode.Created;
-                return CreatedAtRoute("GetPublication", new { id = publication.Id }, _response);
+                return CreatedAtRoute("GetProperty", new { id = publication.Id }, _response);
             }
 
             catch (Exception ex)
@@ -119,11 +118,11 @@ namespace HouseRent_API.Controllers
             return _response;
         }
 
-        [HttpDelete("{id:int}", Name = "DeletePublication")]
+        [HttpDelete("{id:int}", Name = "DeleteProperty")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> DeletePublication(int id)
+        public async Task<ActionResult<APIResponse>> DeleteProperty(int id)
         {
             try
             {
@@ -132,7 +131,7 @@ namespace HouseRent_API.Controllers
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
                 }
-                var publication = await _PublicationRepo.GetAsync(x => x.Id == id);
+                var publication = await _PropertyRepo.GetAsync(x => x.Id == id);
 
                 if (publication == null)
                 {
@@ -140,7 +139,7 @@ namespace HouseRent_API.Controllers
                     return NotFound(_response);
                 }
 
-                await _PublicationRepo.RemoveAsync(publication);
+                await _PropertyRepo.RemoveAsync(publication);
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
 
@@ -154,11 +153,11 @@ namespace HouseRent_API.Controllers
             }
             return _response;
         }
-        [HttpPut("{id:int}", Name = "UpdatePublication")]
+        [HttpPut("{id:int}", Name = "UpdateProperty")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> UpdatePublication(int id, [FromBody] PublicationUpdateDto updateDto)
+        public async Task<ActionResult<APIResponse>> UpdateProperty(int id, [FromBody] PropertyUpdateDto updateDto)
         {
             try
             {
@@ -174,9 +173,9 @@ namespace HouseRent_API.Controllers
                 //    return NotFound();
                 //}
 
-                Publication publication = _mapper.Map<Publication>(updateDto);
+                Property property = _mapper.Map<Property>(updateDto);
 
-                await _PublicationRepo.UpdateAsync(publication);
+                await _PropertyRepo.UpdateAsync(property);
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
 
@@ -191,10 +190,10 @@ namespace HouseRent_API.Controllers
             return _response;
         }
 
-        [HttpPatch("{id:int}", Name = "UpdatePartialPublication")]
+        [HttpPatch("{id:int}", Name = "UpdatePartialProperty")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> UpdatePartialPublication(int id, JsonPatchDocument<PublicationUpdateDto> patchDto)
+        public async Task<ActionResult<APIResponse>> UpdatePartialProperty(int id, JsonPatchDocument<PropertyUpdateDto> patchDto)
         {
             try
             {
@@ -204,17 +203,17 @@ namespace HouseRent_API.Controllers
                 {
                     return BadRequest(_response);
                 }
-                var publication = await _PublicationRepo.GetAsync(x => x.Id == id, tracked: false);
-                PublicationUpdateDto publicationDto = _mapper.Map<PublicationUpdateDto>(publication);
-                if (publication == null)
+                var property = await _PropertyRepo.GetAsync(x => x.Id == id, tracked: false);
+                PropertyUpdateDto propertyDto = _mapper.Map<PropertyUpdateDto>(property);
+                if (property == null)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
                 }
-                patchDto.ApplyTo(publicationDto, ModelState);
-                Publication model = _mapper.Map<Publication>(publicationDto);
+                patchDto.ApplyTo(propertyDto, ModelState);
+                Property model = _mapper.Map<Property>(propertyDto);
 
-                await _PublicationRepo.UpdateAsync(model);
+                await _PropertyRepo.UpdateAsync(model);
 
                 if (!ModelState.IsValid)
                 {

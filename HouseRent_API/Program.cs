@@ -11,8 +11,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddScoped<IPublicationRepository, PublicationRepository>();
+builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
+
 
 // Add services to the container.
 
