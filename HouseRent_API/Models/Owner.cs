@@ -1,7 +1,10 @@
-﻿namespace HouseRent_API.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HouseRent_API.Models
 {
     public class Owner
     {
+        [Key]
         public string Name { get; set; }
         public string Telephone { get; set; }
         public string Email { get; set; }
