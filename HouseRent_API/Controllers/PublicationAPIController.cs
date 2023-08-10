@@ -36,7 +36,7 @@ namespace HouseRent_API.Controllers
             try
             {
                 //_logger.LogInformation("Getting all publications");
-                IEnumerable<Publication> publicationList = await _PublicationRepo.GetAllAsync();
+                IEnumerable<Property> publicationList = await _PublicationRepo.GetAllAsync();
                 _response.Result = _mapper.Map<List<PublicationDto>>(publicationList);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
@@ -101,7 +101,7 @@ namespace HouseRent_API.Controllers
                 {
                     return BadRequest(createDto);
                 }
-                Publication publication = _mapper.Map<Publication>(createDto);
+                Property publication = _mapper.Map<Property>(createDto);
 
                 publication.CreatedDate = DateTime.Now;
                 await _PublicationRepo.CreateAsync(publication);
@@ -174,7 +174,7 @@ namespace HouseRent_API.Controllers
                 //    return NotFound();
                 //}
 
-                Publication publication = _mapper.Map<Publication>(updateDto);
+                Property publication = _mapper.Map<Property>(updateDto);
 
                 await _PublicationRepo.UpdateAsync(publication);
                 _response.StatusCode = HttpStatusCode.NoContent;
@@ -212,7 +212,7 @@ namespace HouseRent_API.Controllers
                     return BadRequest(_response);
                 }
                 patchDto.ApplyTo(publicationDto, ModelState);
-                Publication model = _mapper.Map<Publication>(publicationDto);
+                Property model = _mapper.Map<Property>(publicationDto);
 
                 await _PublicationRepo.UpdateAsync(model);
 

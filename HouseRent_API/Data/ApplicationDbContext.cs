@@ -9,12 +9,12 @@ namespace HouseRent_API.Data
         {
             
         }
-        public DbSet<Publication> Publications { get; set; }
+        public DbSet<Property> Publications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Publication>().HasData(
-                new Publication()
+            modelBuilder.Entity<Property>().HasData(
+                new Property()
                 {
                     Id = 1,
                     Address = "Projecto Nova vida",
@@ -33,7 +33,7 @@ namespace HouseRent_API.Data
                     Tipology = "T2",
                     
                 },
-                    new Publication()
+                    new Property()
                 {
                         Id  = 2,
                      Address = "Projecto Nova vida",
@@ -51,7 +51,7 @@ namespace HouseRent_API.Data
                         Price = 400000,
                         Tipology = "T2"
                     },
-                        new Publication()
+                        new Property()
                         {
                             Id = 3,
                             Address = "Projecto Nova vida",
@@ -69,7 +69,7 @@ namespace HouseRent_API.Data
                             Price = 400000,
                             Tipology = "T2"
                         },
-                            new Publication()
+                            new Property()
                             {
                                 Id = 4,
                                 Address = "Projecto Nova vida",
@@ -87,7 +87,7 @@ namespace HouseRent_API.Data
                                 Price = 400000,
                                 Tipology = "T2"
                             },
-                                new Publication()
+                                new Property()
                                 {
                                     Id = 5,
                                     Address = "Projecto Nova vida",
@@ -105,7 +105,7 @@ namespace HouseRent_API.Data
                                     Price = 400000,
                                     Tipology = "T2"
                                 },
-                                    new Publication()
+                                    new Property()
                                     {
                                         Id = 6,
                                         Address = "Projecto Nova vida",
@@ -123,7 +123,7 @@ namespace HouseRent_API.Data
                                         Price = 400000,
                                         Tipology = "T2"
                                     },
-                                        new Publication()
+                                        new Property()
                                         {
                                             Id = 7,
                                             Address = "Projecto Nova vida",
@@ -141,7 +141,7 @@ namespace HouseRent_API.Data
                                             Price = 400000,
                                             Tipology = "T2"
                                         },
-                                            new Publication()
+                                            new Property()
                                             {
                                                 Id = 8,
                                                 Address = "Projecto Nova vida",

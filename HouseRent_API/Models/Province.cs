@@ -2,7 +2,7 @@
 
 namespace HouseRent_API.Models
 {
-    public class Municipalities_
+    public class Province
     {
         [Key]
         public int Id { get; set; }
