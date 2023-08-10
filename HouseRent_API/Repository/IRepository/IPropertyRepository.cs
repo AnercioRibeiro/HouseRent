@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace HouseRent_API.Repository.IRepository
 {
-    public interface IPublicationRepository : IRepository<Property>
+    public interface IPropertyRepository : IRepository<Property>
     {
         Task<Property> UpdateAsync(Property publication);
     }

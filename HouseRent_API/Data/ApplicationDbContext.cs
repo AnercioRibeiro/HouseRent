@@ -9,7 +9,7 @@ namespace HouseRent_API.Data
         {
             
         }
-        public DbSet<Property> Publications { get; set; }
+        public DbSet<Property> Properties { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -18,12 +18,9 @@ namespace HouseRent_API.Data
                 {
                     Id = 1,
                     Address = "Projecto Nova vida",
-                    Municipalities = "Kilamba Kiaxi",
                     Description = "Apartamento T2",
-                    Details = "2 quartos, 1 sala, 1 casa de banho, cozinha e dispensa",
                     Elevator = false,
                     Floor = "3º Andar",
-                    Identifier = "1234",
                     Latitude = "-8.8303705",
                     Longitude = "13.2779031",
                     Name = "",
@@ -37,12 +34,9 @@ namespace HouseRent_API.Data
                 {
                         Id  = 2,
                      Address = "Projecto Nova vida",
-                        Municipalities = "Kilamba Kiaxi",
                         Description = "Apartamento T2",
-                        Details = "2 quartos, 1 sala, 1 casa de banho, cozinha e dispensa",
                         Elevator = false,
                         Floor = "3º Andar",
-                        Identifier = "1234",
                         Latitude = "-8.8303705",
                         Longitude = "13.2779031",
                         Name = "",
@@ -55,12 +49,9 @@ namespace HouseRent_API.Data
                         {
                             Id = 3,
                             Address = "Projecto Nova vida",
-                            Municipalities = "Kilamba Kiaxi",
                             Description = "Apartamento T2",
-                            Details = "2 quartos, 1 sala, 1 casa de banho, cozinha e dispensa",
                             Elevator = false,
                             Floor = "3º Andar",
-                            Identifier = "1234",
                             Latitude = "-8.8303705",
                             Longitude = "13.2779031",
                             Name = "",
@@ -73,12 +64,9 @@ namespace HouseRent_API.Data
                             {
                                 Id = 4,
                                 Address = "Projecto Nova vida",
-                                Municipalities = "Kilamba Kiaxi",
                                 Description = "Apartamento T2",
-                                Details = "2 quartos, 1 sala, 1 casa de banho, cozinha e dispensa",
                                 Elevator = false,
                                 Floor = "3º Andar",
-                                Identifier = "1234",
                                 Latitude = "-8.8303705",
                                 Longitude = "13.2779031",
                                 Name = "",
@@ -91,12 +79,9 @@ namespace HouseRent_API.Data
                                 {
                                     Id = 5,
                                     Address = "Projecto Nova vida",
-                                    Municipalities = "Kilamba Kiaxi",
                                     Description = "Apartamento T2",
-                                    Details = "2 quartos, 1 sala, 1 casa de banho, cozinha e dispensa",
                                     Elevator = false,
                                     Floor = "3º Andar",
-                                    Identifier = "1234",
                                     Latitude = "-8.8303705",
                                     Longitude = "13.2779031",
                                     Name = "",
@@ -109,12 +94,9 @@ namespace HouseRent_API.Data
                                     {
                                         Id = 6,
                                         Address = "Projecto Nova vida",
-                                        Municipalities = "Kilamba Kiaxi",
                                         Description = "Apartamento T2",
-                                        Details = "2 quartos, 1 sala, 1 casa de banho, cozinha e dispensa",
                                         Elevator = false,
                                         Floor = "3º Andar",
-                                        Identifier = "1234",
                                         Latitude = "-8.8303705",
                                         Longitude = "13.2779031",
                                         Name = "",
@@ -127,12 +109,9 @@ namespace HouseRent_API.Data
                                         {
                                             Id = 7,
                                             Address = "Projecto Nova vida",
-                                            Municipalities = "Kilamba Kiaxi",
                                             Description = "Apartamento T2",
-                                            Details = "2 quartos, 1 sala, 1 casa de banho, cozinha e dispensa",
                                             Elevator = false,
                                             Floor = "3º Andar",
-                                            Identifier = "1234",
                                             Latitude = "-8.8303705",
                                             Longitude = "13.2779031",
                                             Name = "",
@@ -145,12 +124,9 @@ namespace HouseRent_API.Data
                                             {
                                                 Id = 8,
                                                 Address = "Projecto Nova vida",
-                                                Municipalities = "Kilamba Kiaxi",
                                                 Description = "Apartamento T2",
-                                                Details = "2 quartos, 1 sala, 1 casa de banho, cozinha e dispensa",
                                                 Elevator = false,
                                                 Floor = "3º Andar",
-                                                Identifier = "1234",
                                                 Latitude = "-8.8303705",
                                                 Longitude = "13.2779031",
                                                 Name = "",

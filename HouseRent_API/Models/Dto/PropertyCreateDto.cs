@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HouseRent_API.Models.Dto
 {
-    public class PublicationCreateDto
+    public class PropertyCreateDto
     {
 
         [Required]
         [MaxLength(30)]
         public string Name { get; set; }
-        public string Identifier { get; set; }
         public string ImageUrl { get; set; }
         [Required]
         [MaxLength(100)]
@@ -26,12 +26,20 @@ namespace HouseRent_API.Models.Dto
         public bool Elevator { get; set; }
         [Required]
         [MaxLength(1000)]
-        public string Details { get; set; }
         public string PaymentPeriodicy { get; set; }
         public decimal Price { get; set; }
+        public Owner Owner { get; set; }
+        [ForeignKey("Owner")]
+        public int OwnerId { get; set; }
+        public County County { get; set; }
+        [ForeignKey("County")]
+        public int CountyId { get; set; }
+        public Province Province { get; set; }
+        [ForeignKey("Province")]
+        public int ProvinceId { get; set; }
         [Required]
         [MaxLength(50)]
-        public string Municipalities { get; set; }
         public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
     }
 }
