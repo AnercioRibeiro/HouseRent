@@ -8,7 +8,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HouseRent_API.Repository
 {
-    public class PublicationRepository : Repository<Publication>, IPublicationRepository
+    public class PublicationRepository : Repository<Property>, IPublicationRepository
     {
         private readonly ApplicationDbContext _db;
         public PublicationRepository(ApplicationDbContext db) : base(db)
@@ -58,7 +58,7 @@ namespace HouseRent_API.Repository
         //    await _db.SaveChangesAsync();
         //}
 
-        public async Task<Publication> UpdateAsync(Publication publication)
+        public async Task<Property> UpdateAsync(Property publication)
         {
             publication.UpdatedDate = DateTime.Now;
              _db.Publications.Update(publication);

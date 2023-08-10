@@ -8,11 +8,11 @@ namespace HouseRent_API
     {
         public MappingConfig()
         {
-            CreateMap<Publication, PublicationDto>();
-            CreateMap<PublicationDto, Publication>();
+            CreateMap<Property, PublicationDto>();
+            CreateMap<PublicationDto, Property>();
 
-            CreateMap<Publication, PublicationCreateDto>().ReverseMap();
-            CreateMap<Publication, PublicationUpdateDto>().ReverseMap();
+            CreateMap<Property, PublicationCreateDto>().ReverseMap();
+            CreateMap<Property, PublicationUpdateDto>().ReverseMap();
             //;            CreateMap<Publication, PublicationCreateDto>();
             //            CreateMap<Publication, PublicationUpdateDto>();
 
