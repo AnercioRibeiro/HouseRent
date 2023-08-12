@@ -3,8 +3,8 @@ using System.Linq.Expressions;
 
 namespace HouseRent_API.Repository.IRepository
 {
-    public interface IPropertyRepository : IRepository<Property>
+    public interface IProvinceRepository : IRepository<Province>
     {
-        Task<Property> UpdateAsync(Property property);
+        Task<Province> UpdateAsync(Province province);
     }
 }

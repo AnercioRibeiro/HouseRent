@@ -92,7 +92,7 @@ namespace HouseRent_API.Controllers
             try
             {
 
-                if (await _PropertyRepo.GetAsync(x => x.Name.ToLower() == createDto.Name.ToLower()) != null)
+                if (await _PropertyRepo.GetAsync(x => x.Description.ToLower() == createDto.Description.ToLower()) != null)
                 {
                     ModelState.AddModelError("CreatePropertyCustomError", "Property already Exists!");
                     return BadRequest(ModelState);
