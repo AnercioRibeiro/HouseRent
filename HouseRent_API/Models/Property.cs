@@ -29,15 +29,20 @@ namespace HouseRent_API.Models
         [MaxLength(1000)]
         public string PaymentPeriodicy { get; set; }
         public decimal Price { get; set; }
-        public Owner Owner { get; set; }
         [ForeignKey("Owner")]
         public int OwnerId { get; set; }
-        public County County { get; set; }
-        [ForeignKey("County")]
-        public int CountyId { get; set; }
-        public Province Province { get; set; }
+        public Owner Owner { get; set; }
+
+        //[ForeignKey("County")]
+        //public int CountyId { get; set; }
+        //public County County { get; set; }
+       
+        
         [ForeignKey("Province")]
         public int ProvinceId { get; set; }
+        public Province Province { get; set; }
+     
+       
         [Required]
         [MaxLength(50)]
         public DateTime CreatedDate { get; set; }
