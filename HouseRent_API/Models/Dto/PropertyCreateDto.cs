@@ -28,18 +28,13 @@ namespace HouseRent_API.Models.Dto
         [MaxLength(1000)]
         public string PaymentPeriodicy { get; set; }
         public decimal Price { get; set; }
-        public Owner Owner { get; set; }
         
         public int OwnerId { get; set; }
-        public County County { get; set; }
         
         public int CountyId { get; set; }
-        public Province Province { get; set; }
-      
+
         public int ProvinceId { get; set; }
-        [Required]
-        [MaxLength(50)]
-        public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+      
+        
     }
 }

@@ -65,5 +65,13 @@ namespace HouseRent_API.Repository
             await _db.SaveChangesAsync();
             return property;
         }
+
+        public async Task<IReadOnlyList<Property>> GetPropertiesAsync()
+        {
+            return await _db.Properties
+            .Include(p => p.Province)
+            .Include(p => p.Owner)
+            .ToListAsync();
+        }
     }
 }
