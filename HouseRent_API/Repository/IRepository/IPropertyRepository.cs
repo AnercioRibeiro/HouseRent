@@ -6,5 +6,6 @@ namespace HouseRent_API.Repository.IRepository
     public interface IPropertyRepository : IRepository<Property>
     {
         Task<Property> UpdateAsync(Property property);
+        Task<IReadOnlyList<Property>> GetPropertiesAsync();
     }
 }

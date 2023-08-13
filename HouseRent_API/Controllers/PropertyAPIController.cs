@@ -36,7 +36,7 @@ namespace HouseRent_API.Controllers
             try
             {
                 //_logger.LogInformation("Getting all publications");
-                IEnumerable<Property> propertyList = await _PropertyRepo.GetAllAsync();
+                IEnumerable<Property> propertyList = await _PropertyRepo.GetPropertiesAsync();
                 _response.Result = _mapper.Map<List<PropertyDto>>(propertyList);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
