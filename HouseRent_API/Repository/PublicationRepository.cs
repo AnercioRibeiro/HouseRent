@@ -16,7 +16,14 @@ namespace HouseRent_API.Repository
             _db = db;
         }
 
-    
+        public async Task<IReadOnlyList<Publication>> GetPublicationsAsync()
+        {
+            return await _db.Publications
+            .Include(p => p.Property)
+            .ToListAsync();
+        }
+
+
         //public async Task CreateAsync(Publication entity)
         //{
         //   await  _db.Publications.AddAsync(entity);
