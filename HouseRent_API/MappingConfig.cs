@@ -13,6 +13,10 @@ namespace HouseRent_API
 
             CreateMap<Property, PropertyCreateDto>().ReverseMap();
             CreateMap<Property, PropertyUpdateDto>().ReverseMap();
+
+            CreateMap<Publication, PublicationDto>().ReverseMap();
+            CreateMap<Publication, PublicationCreateDto>().ReverseMap();
+            CreateMap<Publication, PublicationUpdateDto>().ReverseMap();
             //;            CreateMap<Publication, PublicationCreateDto>();
             //            CreateMap<Publication, PublicationUpdateDto>();
 
