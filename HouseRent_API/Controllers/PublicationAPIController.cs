@@ -4,10 +4,13 @@ using HouseRent_API.Models;
 using HouseRent_API.Models.APIResponse;
 using HouseRent_API.Models.Dto;
 using HouseRent_API.Repository.IRepository;
+using HouseRent_API.Services.IServices;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Net;
 
 namespace HouseRent_API.Controllers
@@ -18,36 +21,34 @@ namespace HouseRent_API.Controllers
     {
         //private readonly ILogger<PublicationAPIController> _logger;
         private readonly IPublicationRepository _PublicationRepo;
+        public readonly IPublicationService _publicationService;
         private readonly IMapper _mapper;
         protected APIResponse _response;
 
-        public PublicationAPIController(IPublicationRepository PublicationRepo, IMapper mapper)
+        public PublicationAPIController(IPublicationRepository PublicationRepo, IMapper mapper, IPublicationService publicationService)
         {
             //_logger = logger;
             _PublicationRepo = PublicationRepo;
             _mapper = mapper;
             this._response = new();
+            _publicationService = publicationService;
         }
 
         [HttpGet(Name = "GetPublications")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetAllPublications()
-        {
-            try
-            {
+        public async Task<ActionResult> GetAllPublications()
+         {
+            List<PublicationDto> list = new();
+          
                 //_logger.LogInformation("Getting all publications");
-                IEnumerable<Publication> PublicationList = await _PublicationRepo.GetPublicationsAsync();
-                _response.Result = _mapper.Map<List<PublicationDto>>(PublicationList);
-                _response.StatusCode = HttpStatusCode.OK;
-                return Ok(_response);
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.ErrorMessages = new List<string>() { ex.ToString()
-                };
-            }
-            return _response;
+                var response = await _publicationService.GetAllAsync<APIResponse>();
+                if (response != null && response.IsSuccess)
+                {
+                    list = JsonConvert.DeserializeObject<List<PublicationDto>>(Convert.ToString(response.Result));
+                }
+                return Ok(list);
+               
+            
         }
 
         [HttpGet("{id:int}", Name = "GetPublication")]

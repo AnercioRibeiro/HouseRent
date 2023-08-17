@@ -5,6 +5,7 @@
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>167de2c8-d27e-48da-9802-864b028e8d10</UserSecretsId>
+    <PackageProjectUrl></PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +22,10 @@
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HouseRent.Utility\HouseRent.Utility.csproj" />
   </ItemGroup>
 
 </Project>
