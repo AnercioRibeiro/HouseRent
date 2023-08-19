@@ -12,7 +12,7 @@ namespace HouseRent_API.Models
         public string Identifier { get; set; }
         public Property Property { get; set; }
         [ForeignKey("Property")]
-        public int PublicationId { get; set; }
+        public int PropertyId { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
     }

@@ -67,6 +67,8 @@ namespace HouseRent_API.Repository
         //    await _db.SaveChangesAsync();
         //}
 
+
+
         public async Task<Publication> UpdateAsync(Publication publication)
         {
 

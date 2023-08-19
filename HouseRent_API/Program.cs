@@ -3,6 +3,8 @@ using HouseRent_API;
 using HouseRent_API.Data;
 using HouseRent_API.Repository;
 using HouseRent_API.Repository.IRepository;
+using HouseRent_API.Services;
+using HouseRent_API.Services.IServices;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -11,6 +13,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddHttpClient<IPublicationService, PublicationService>();
+builder.Services.AddScoped<IPublicationService, PublicationService>();
 builder.Services.AddScoped<IPublicationRepository, PublicationRepository>();
 builder.Services.AddScoped<ICountyRepository, CountyRepository>();
 builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();

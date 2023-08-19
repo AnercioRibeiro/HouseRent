@@ -7,5 +7,6 @@ namespace HouseRent_API.Repository.IRepository
     {
         Task<Publication> UpdateAsync(Publication publication);
         Task<IReadOnlyList<Publication>> GetPublicationsAsync();
+        
     }
 }

@@ -18,6 +18,7 @@ namespace HouseRent_API.Controllers
     {
         //private readonly ILogger<PublicationAPIController> _logger;
         private readonly IPropertyRepository _PropertyRepo;
+        public readonly IPublicationRepository _PublicRepo;
         private readonly IMapper _mapper;
         protected APIResponse _response;
 
@@ -97,15 +98,33 @@ namespace HouseRent_API.Controllers
                     ModelState.AddModelError("CreatePropertyCustomError", "Property already Exists!");
                     return BadRequest(ModelState);
                 }
+                //if (createDto == null || publication == null)
+                //{
+                //    return BadRequest(createDto);
+                //}
+                //Property property = _mapper.Map<Property>(createDto);
+
+                //property.CreatedDate = DateTime.Now;
+                //await _PropertyRepo.CreateAsync(property);
+                //_response.Result = _mapper.Map<PropertyDto>(property);
+                //_response.StatusCode = HttpStatusCode.Created;
+                //return CreatedAtRoute("GetProperty", new { id = property.Id }, _response);
+
+              
+
                 if (createDto == null)
                 {
                     return BadRequest(createDto);
                 }
-                Property property = _mapper.Map<Property>(createDto);
+                var property = _mapper.Map<Property>(createDto);
+               // var publication = _mapper.Map<Publication>(publicationCreate);
+
 
                 property.CreatedDate = DateTime.Now;
                 await _PropertyRepo.CreateAsync(property);
+               
                 _response.Result = _mapper.Map<PropertyDto>(property);
+                
                 _response.StatusCode = HttpStatusCode.Created;
                 return CreatedAtRoute("GetProperty", new { id = property.Id }, _response);
             }
