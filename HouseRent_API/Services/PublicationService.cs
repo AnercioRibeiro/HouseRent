@@ -24,7 +24,7 @@ namespace HouseRent_API.Services
                 {
                     ApiType = SD.ApiType.POST,
                     Data = dto,
-                    Url = villaUrl + "/api/PublicationAPI"
+                    Url = villaUrl + "/api/Publication"
                 });
             }
 
@@ -33,7 +33,7 @@ namespace HouseRent_API.Services
                 return SendAsync<T>(new APIRequest()
                 {
                     ApiType = SD.ApiType.DELETE,
-                    Url = villaUrl + "/api/PublicationAPI/" + id
+                    Url = villaUrl + "/api/Publication/" + id
                 });
             }
 
@@ -42,7 +42,7 @@ namespace HouseRent_API.Services
                 return SendAsync<T>(new APIRequest()
                 {
                     ApiType = SD.ApiType.GET,
-                    Url = villaUrl + "/api/PublicationAPI"
+                    Url = villaUrl + "/api/Publication"
                 });
             }
 
@@ -51,7 +51,7 @@ namespace HouseRent_API.Services
                 return SendAsync<T>(new APIRequest()
                 {
                     ApiType = SD.ApiType.GET,
-                    Url = villaUrl + "/api/PublicationAPI/" + id
+                    Url = villaUrl + "/api/Publication/" + id
                 });
             }
 
@@ -61,7 +61,7 @@ namespace HouseRent_API.Services
             {
                 ApiType = SD.ApiType.PUT,
                 Data = dto,
-                Url = villaUrl + "/api/PublicationAPI/"
+                Url = villaUrl + "/api/Publication/"
             });
         }
 

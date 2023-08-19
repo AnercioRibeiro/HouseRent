@@ -39,7 +39,7 @@ namespace HouseRent_API.Repository
         //public async Task<List<Publication>> GetAllAsync(Expression<Func<Publication, bool>> filter = null)
         //{
         //    IQueryable <Publication> query = _db.Publications;
-         
+
         //    if (filter !=null)
         //    {
         //        query = query.Where(filter);
@@ -57,6 +57,14 @@ namespace HouseRent_API.Repository
         //{
         //    await _db.SaveChangesAsync();
         //}
+
+        public async Task<Property> Create(Property property)
+        {
+            await _db.AddAsync(property);
+            await _db.SaveChangesAsync();
+
+            return property;
+        }
 
         public async Task<Property> UpdateAsync(Property property)
         {

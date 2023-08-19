@@ -21,32 +21,36 @@ namespace HouseRent_API.Controllers
     {
         //private readonly ILogger<PublicationAPIController> _logger;
         private readonly IPublicationRepository _PublicationRepo;
-        public readonly IPublicationService _publicationService;
+        private readonly IPropertyRepository _PropertyRepo;
         private readonly IMapper _mapper;
         protected APIResponse _response;
 
-        public PublicationAPIController(IPublicationRepository PublicationRepo, IMapper mapper, IPublicationService publicationService)
+        public PublicationAPIController(IPublicationRepository PublicationRepo, IMapper mapper, IPropertyRepository Propertyrepo)
         {
             //_logger = logger;
             _PublicationRepo = PublicationRepo;
             _mapper = mapper;
+            _PropertyRepo = Propertyrepo;
             this._response = new();
-            _publicationService = publicationService;
         }
 
         [HttpGet(Name = "GetPublications")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetAllPublications()
+        public async Task<ActionResult<APIResponse>> GetAllPublications()
          {
             List<PublicationDto> list = new();
           
                 //_logger.LogInformation("Getting all publications");
-                var response = await _publicationService.GetAllAsync<APIResponse>();
-                if (response != null && response.IsSuccess)
-                {
-                    list = JsonConvert.DeserializeObject<List<PublicationDto>>(Convert.ToString(response.Result));
-                }
-                return Ok(list);
+               var publication = await _PublicationRepo.GetPublicationsAsync();
+            if (publication == null)
+            {
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                return BadRequest(_response);
+            }
+            _response.Result = _mapper.Map<List<PublicationDto>>(publication);
+            _response.StatusCode = HttpStatusCode.OK;
+
+            return Ok(_response);
                
             
         }
@@ -98,6 +102,29 @@ namespace HouseRent_API.Controllers
                     ModelState.AddModelError("CreatePublicationCustomError", "Publication already Exists!");
                     return BadRequest(ModelState);
                 }
+
+                Property property = new()
+                {
+
+                    Address = createDto.Address,
+                    CreatedDate = createDto.CreatedDate,
+                    Description = createDto.Description,
+                    Division = createDto.Division,
+                    Elevator = createDto.Elevator,
+                    Floor = createDto.Floor,
+                    ImageUrl = createDto.ImageUrl,
+                    Latitude = createDto.Latitude,
+                    Longitude = createDto.Longitude,
+                    Name = createDto.Name,
+                    OwnerId = 1,
+                    PaymentPeriodicy = createDto.PaymentPeriodicy,
+                    Price = createDto.Price,
+                    ProvinceId = 1,
+                    Tipology = createDto.Tipology
+
+                };
+                var createdProp = await _PropertyRepo.Create(property);
+
                 if (createDto == null)
                 {
                     return BadRequest(createDto);
@@ -105,6 +132,7 @@ namespace HouseRent_API.Controllers
                 Publication Publication = _mapper.Map<Publication>(createDto);
 
                 Publication.CreatedDate = DateTime.Now;
+                Publication.PropertyId = createdProp.Id;
                 await _PublicationRepo.CreateAsync(Publication);
                 _response.Result = _mapper.Map<PublicationDto>(Publication);
                 _response.StatusCode = HttpStatusCode.Created;
